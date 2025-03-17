@@ -1,7 +1,113 @@
-#include<"stdio.h>;
+public class Producto {
+    private int codigo;
+    private String nombre;
+    private int cantidad;
 
-int main(){
+    public Producto(int codigo, String nombre, int cantidad) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
 
+    public int getCodigo() { return codigo; }
+    public String getNombre() { return nombre; }
+    public int getCantidad() { return cantidad; }
 
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
+    @Override
+    public String toString() {
+        return "Codigo: " + codigo + ", Nombre: " + nombre + ", Cantidad: " + cantidad;
+    }
+}
+public class Nodo {
+    Producto producto;
+    Nodo siguiente;
+
+    public Nodo(Producto producto) {
+        this.producto = producto;
+        this.siguiente = null;
+    }
+}
+
+public class ListaProductos {
+    private Nodo cabeza;
+
+    public void registrarProducto(int codigo, String nombre, int cantidad) {
+        Nodo nuevo = new Nodo(new Producto(codigo, nombre, cantidad));
+        if (cabeza == null) {
+            cabeza = nuevo;
+        } else {
+            Nodo temp = cabeza;
+            while (temp.siguiente != null) {
+                temp = temp.siguiente;
+            }
+            temp.siguiente = nuevo;
+        }
+    }
+
+    public void mostrarProductos() {
+        Nodo temp = cabeza;
+        while (temp != null) {
+            System.out.println(temp.producto);
+            temp = temp.siguiente;
+        }
+    }
+
+    public boolean buscarProducto(int codigo) {
+        Nodo temp = cabeza;
+        while (temp != null) {
+            if (temp.producto.getCodigo() == codigo) {
+                System.out.println("Producto encontrado: " + temp.producto);
+                return true;
+            }
+            temp = temp.siguiente;
+        }
+        System.out.println("Producto no encontrado.");
+        return false;
+    }
+
+    public void eliminarProducto(int codigo) {
+        if (cabeza == null) return;
+        if (cabeza.producto.getCodigo() == codigo) {
+            cabeza = cabeza.siguiente;
+            return;
+        }
+        Nodo temp = cabeza;
+        while (temp.siguiente != null && temp.siguiente.producto.getCodigo() != codigo) {
+            temp = temp.siguiente;
+        }
+        if (temp.siguiente != null) {
+            temp.siguiente = temp.siguiente.siguiente;
+        }
+    }
+
+    public void liberarMemoria() {
+        cabeza = null;
+        System.gc(); // Sugerir al recolector de basura liberar memoria
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        ListaProductos lista = new ListaProductos();
+
+        // Registrar productos correctamente
+        lista.registrarProducto(1, "Laptop", 10);
+        lista.registrarProducto(2, "Mouse", 50);
+        lista.mostrarProductos();
+
+        // Buscar producto
+        System.out.println("Buscando producto con código 2:");
+        lista.buscarProducto(2);
+
+        // Eliminar producto
+        System.out.println("Eliminando producto con código 1:");
+        lista.eliminarProducto(1);
+        lista.mostrarProductos();
+
+        // Liberar memoria
+        System.out.println("Liberando memoria:");
+        lista.liberarMemoria();
+    }
 }
