@@ -33,7 +33,7 @@ Nodo* insertar(Nodo* raiz, Pelicula pelicula) {
     } else if (pelicula.año > raiz->pelicula.año) {
         raiz->derecha = insertar(raiz->derecha, pelicula);
     } else {
-        // Mismo año, insertar a la izquierda
+        
         raiz->izquierda = insertar(raiz->izquierda, pelicula);
     }
     
@@ -98,10 +98,9 @@ void encontrarFracasos(Nodo* raiz, Pelicula fracasos[3]) {
     
     encontrarFracasos(raiz->izquierda, fracasos);
     
-    // Verificar si esta película es uno de los 3 peores fracasos
     for (int i = 0; i < 3; i++) {
         if (raiz->pelicula.recaudacion < fracasos[i].recaudacion) {
-            // Desplazar los demás fracasos
+            
             for (int j = 2; j > i; j--) {
                 fracasos[j] = fracasos[j-1];
             }
@@ -125,7 +124,7 @@ int main() {
     Nodo* raiz = NULL;
     int opcion;
     
-    // Menú de opciones
+   
     do {
         printf("\n--- Menu de Arbol Binario de Peliculas ---\n");
         printf("1. Insertar pelicula\n");
@@ -136,14 +135,14 @@ int main() {
         printf("0. Salir\n");
         printf("Seleccione una opcion: ");
         scanf("%d", &opcion);
-        getchar(); // Limpiar el buffer
+        getchar(); 
         
         switch (opcion) {
             case 1: {
                 Pelicula nueva;
                 printf("Nombre de la pelicula: ");
                 fgets(nueva.nombre, 100, stdin);
-                nueva.nombre[strcspn(nueva.nombre, "\n")] = '\0'; // Eliminar salto de línea
+                nueva.nombre[strcspn(nueva.nombre, "\n")] = '\0'; 
                 
                 printf("Año de realizacion: ");
                 scanf("%d", &nueva.año);
